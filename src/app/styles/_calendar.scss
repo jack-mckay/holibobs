@@ -1,0 +1,272 @@
+@use "variables"as *;
+
+.calendar-card {
+    margin-bottom: 1.125rem;
+}
+
+.calendar-month-view {
+    overflow: hidden;
+}
+
+.calendar-weekdays,
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-weekdays {
+    border-bottom: $border;
+}
+
+.calendar-weekdays span {
+    padding: 0.75rem;
+    color: #8b9993;
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.calendar-days {
+    grid-auto-rows: minmax(5.75rem, 1fr);
+}
+
+.calendar-day {
+    min-width: 0;
+    min-height: 5.75rem;
+    padding: 0.5625rem 0.5rem;
+    border-right: $border;
+    border-bottom: $border;
+}
+
+.calendar-day:nth-child(7n) {
+    border-right: 0;
+}
+
+.calendar-day.empty {
+    background: #fbfcfb;
+}
+
+.calendar-day .date-number {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #8f9c97;
+    font-size: $text-sm;
+}
+
+.calendar-day.today {
+    background: rgba(20, 184, 166, 0.08);
+}
+
+.calendar-day .date-number.today-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    min-height: 1.25rem;
+    padding: 0.125rem;
+    border-radius: 50%;
+    background: $teal;
+    color: #fff;
+    font-weight: 700;
+}
+
+.event {
+    display: block;
+    width: 100%;
+    margin-top: 0.3125rem;
+    padding: 0.3125rem 0.375rem;
+    border-left: 0.1875rem solid;
+    border-radius: $radius-sm;
+    text-align: left;
+}
+
+.event span,
+.event small {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.event span {
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.event small {
+    margin-top: 0.125rem;
+    font-size: 0.5625rem;
+    opacity: 0.72;
+}
+
+.event.teal {
+    color: $teal-dark;
+    border-color: $teal;
+    background: $teal-light;
+}
+
+.event.purple {
+    color: $purple-dark;
+    border-color: $purple;
+    background: $purple-light;
+}
+
+.event.orange {
+    color: $orange-dark;
+    border-color: $orange;
+    background: $orange-light;
+}
+
+.event.blue {
+    color: $blue-dark;
+    border-color: $blue;
+    background: $blue-light;
+}
+
+.event.pink {
+    color: $pink-dark;
+    border-color: $pink;
+    background: $pink-light;
+}
+
+.event.pending {
+    border-style: dashed;
+}
+
+.year-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.875rem;
+    padding: 1.125rem;
+}
+
+.mini-month {
+    min-height: 10.625rem;
+    padding: 0.75rem;
+    border: $border;
+    border-radius: $radius-sm;
+}
+
+.mini-month>strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: $text-sm;
+}
+
+.mini-calendar .calendar-days {
+    grid-auto-rows: auto;
+    gap: 0.125rem;
+}
+
+.mini-calendar .calendar-day {
+    min-height: 0;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.125rem;
+    border: 0;
+    text-align: center;
+}
+
+.mini-calendar .calendar-day.empty {
+    background: transparent;
+}
+
+.mini-calendar .calendar-day.has-request {
+    border-radius: 0.1875rem;
+}
+
+.mini-calendar .calendar-day.has-request.teal {
+    background: $teal-light;
+}
+
+.mini-calendar .calendar-day.has-request.purple {
+    background: $purple-light;
+}
+
+.mini-calendar .calendar-day.has-request.orange {
+    background: $orange-light;
+}
+
+.mini-calendar .calendar-day.has-request.blue {
+    background: $blue-light;
+}
+
+.mini-calendar .calendar-day.has-request.pink {
+    background: $pink-light;
+}
+
+.mini-calendar .date-number {
+    margin: 0;
+    color: #778780;
+    font-size: $text-sm;
+}
+
+.request-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-top: $border;
+}
+
+.request-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.request-main strong,
+.request-main span {
+    display: block;
+}
+
+.request-main span {
+    margin-top: 0.25rem;
+    color: $muted;
+    font-size: $text-sm;
+}
+
+.request-status {
+    font-size: $text-sm;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.request-status.approved {
+    color: $teal-dark;
+}
+
+.request-status.pending {
+    color: $orange-dark;
+}
+
+.request-status.declined {
+    color: $pink-dark;
+}
+
+.count-pill {
+    padding: 0.3125rem 0.5rem;
+    border-radius: $radius-sm;
+    color: $orange-dark;
+    background: $orange-light;
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.approve-button,
+.reject-button {
+    padding: 0.4375rem 0.5625rem;
+    border-radius: $radius-sm;
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.approve-button {
+    border: 0.0625rem solid $teal;
+    color: $teal-dark;
+}
+
+.reject-button {
+    border: 0.0625rem solid $pink-dark;
+    color: $pink-dark;
+}

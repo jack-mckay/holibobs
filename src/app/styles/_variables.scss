@@ -1,0 +1,51 @@
+$font-body: sans-serif;
+$font-display: sans-serif;
+
+
+$teal: #32af84;
+$teal-light: #e1f3ec;
+$teal-dark: #226c59;
+
+$purple: #755bc0;
+$purple-light: #eee9fc;
+$purple-dark: #66529e;
+$orange: #ff813d;
+$orange-light: #fff0e4;
+$orange-dark: #a55e23;
+$blue: #65a0bb;
+$blue-light: #e1f1f6;
+$blue-dark: #2e6d88;
+$pink: #c9789c;
+$pink-light: #fae5ed;
+$pink-dark: #a35675;
+$ink: #182320;
+$muted: #71817c;
+$description-text: $muted;
+$line: #e5ebe7;
+$paper: #f8faf8;
+$white: #fff;
+$red: #b45454;
+
+$text-lg: 1.25rem;
+$text-xl: 1.875rem;
+$text-md: 1rem;
+$text-sm: 0.875rem;
+
+
+$radius-sm: 0.375rem;
+$radius-md: 0.75rem;
+$radius-lg: 0.875rem;
+$border: 0.0625rem solid $line;
+
+@mixin surface($radius: $radius-md) {
+  border: $border;
+  border-radius: $radius;
+  background: $white;
+}
+
+@mixin label-text {
+  color: $description-text;
+  font-size: $text-sm;
+  font-weight: 700;
+  text-transform: uppercase;
+}

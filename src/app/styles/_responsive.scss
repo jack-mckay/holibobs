@@ -1,0 +1,104 @@
+@use "variables"as *;
+
+@media (max-width: 65.625rem) {
+    .sidebar {
+        width: 13.125rem;
+    }
+
+    .page-body {
+        padding: 2rem 1.5625rem 3.125rem;
+    }
+
+    .topbar {
+        padding: 0 1.5625rem;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 47.5rem) {
+    .sidebar {
+        width: 3.875rem;
+        padding: 1.4375rem 0.5rem 0.9375rem;
+    }
+
+    .nav-item {
+        justify-content: center;
+        gap: 0;
+        padding: 0.75rem 0;
+        font-size: 0;
+    }
+
+    .nav-item svg {
+        width: 1.1875rem;
+        height: 1.1875rem;
+    }
+
+    .nav-badge {
+        position: absolute;
+        margin: -1.0625rem 0 0 1.4375rem;
+        font-size: 0.5625rem;
+    }
+
+    .topbar {
+        padding: 0 1.0625rem;
+    }
+
+    .page-body {
+        padding: 1.75rem 0.9375rem 2.5rem;
+    }
+
+    .page-heading,
+    .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .stats,
+    .lower-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .calendar-month-view {
+        min-width: 40.625rem;
+    }
+
+    .calendar-card {
+        overflow: auto;
+    }
+
+    .year-grid {
+        grid-template-columns: repeat(2, minmax(11.875rem, 1fr));
+        min-width: 28.125rem;
+    }
+
+    .calendar-toolbar {
+        min-width: 40.625rem;
+    }
+
+    .table-head,
+    .table-row {
+        min-width: 40.625rem;
+    }
+
+    .password-form,
+    .modal-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .profile-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .team-search input {
+        width: 100%;
+    }
+}

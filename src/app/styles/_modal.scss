@@ -1,0 +1,129 @@
+@use "variables"as *;
+
+.modal-backdrop {
+    position: fixed;
+    z-index: 10;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background: #173f342e;
+}
+
+.modal {
+    width: min(29.375rem, 100%);
+    padding: 1.5625rem;
+    border-radius: 0.875rem;
+    background: $white;
+    box-shadow: 0 1.375rem 3.75rem #173f3430;
+}
+
+.modal-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.modal h2 {
+    margin-top: 0.4375rem;
+    font-size: $text-lg;
+}
+
+.close-button {
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: $radius-sm;
+    background: #f2f5f3;
+}
+
+.modal label {
+    display: block;
+    margin-bottom: 1rem;
+    color: $description-text;
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.label-description {
+    font-size: $text-sm;
+    margin-bottom: 0.5rem;
+    color: $description-text;
+}
+
+.modal input,
+.modal select,
+.modal textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.4375rem;
+    padding: 0.75rem 0.75rem;
+    border: $border;
+    border-radius: $radius-sm;
+    outline-color: #4dad8b;
+    color: $ink;
+    background: $white;
+    font-size: $text-sm;
+}
+
+.modal textarea {
+    min-height: 4.375rem;
+    resize: vertical;
+}
+
+.date-fields {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.day-total {
+    margin: -0.1875rem 0 1rem;
+    color: #2c8066;
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.5625rem;
+}
+
+.modal-footer>span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #7b8a84;
+    font-size: $text-sm;
+}
+
+.confirmation-message {
+    margin: -0.5rem 0 0;
+    color: #56665f;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+}
+
+.confirmation-footer {
+    justify-content: flex-end;
+    gap: 0.625rem;
+}
+
+.secondary-button,
+.danger-button {
+    padding: 0.625rem 0.875rem;
+    border-radius: $radius-sm;
+    font-size: $text-sm;
+    font-weight: 700;
+}
+
+.secondary-button {
+    color: $ink;
+    background: #f2f5f3;
+}
+
+.danger-button {
+    color: $white;
+    background: #b94d4d;
+}

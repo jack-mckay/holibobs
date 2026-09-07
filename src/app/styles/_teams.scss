@@ -1,0 +1,214 @@
+@use "variables"as *;
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.6875rem;
+}
+
+.team-card {
+    padding: 1rem;
+    @include surface(0.75rem);
+}
+
+.team-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5625rem;
+}
+
+.team-symbol {
+    width: 1.9375rem;
+    height: 1.9375rem;
+    display: grid;
+    place-items: center;
+    border-radius: $radius-sm;
+}
+
+.team-0 {
+    background: $teal-light;
+}
+
+.team-1 {
+    background: $purple-light;
+}
+
+.team-2 {
+    background: $orange-light;
+}
+
+.team-3 {
+    background: $blue-light;
+}
+
+.team-4 {
+    background: $pink-light;
+}
+
+.team-card-head div {
+    flex: 1;
+}
+
+.team-card-head h3 {
+    margin: 0.25rem 0;
+}
+
+.team-card-head span,
+.team-status {
+    color: $muted;
+    font-size: $text-sm;
+}
+
+.team-status {
+    display: flex;
+    justify-content: space-between;
+    border-top: $border;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+}
+
+.team-status strong {
+    color: #287d65;
+    font-size: $text-sm;
+}
+
+.people-panel {
+    overflow: hidden;
+}
+
+.team-section {
+    margin-bottom: 1.5rem;
+}
+
+.team-section__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.625rem;
+}
+
+.team-section__heading h2 {
+    font-size: $text-md;
+}
+
+.team-section__heading span {
+    color: $muted;
+    font-size: $text-sm;
+}
+
+.people-list {
+    border-top: $border;
+}
+
+.person-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    border-bottom: $border;
+    text-align: left;
+}
+
+.person-row:hover {
+    background: #f7fbf8;
+}
+
+.person-copy {
+    flex: 1;
+}
+
+.person-copy strong,
+.person-copy small,
+.person-allowance small {
+    display: block;
+}
+
+.person-copy small,
+.person-allowance small {
+    margin-top: 0.25rem;
+    color: $muted;
+    font-size: $text-sm;
+}
+
+.person-allowance {
+    margin-right: 1.5625rem;
+    text-align: right;
+}
+
+.person-allowance__values {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.person-allowance__values strong.over-limit {
+    color: $red;
+}
+
+.person-allowance__values span {
+    color: $muted;
+    font-size: $text-sm;
+}
+
+.person-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.person-edit-button {
+    color: $muted;
+    padding: 0.375rem 0.5rem;
+    border: $border;
+    border-radius: $radius-sm;
+    font-weight: 700;
+    font-size: $text-sm;
+}
+
+.team-add-button {
+    margin-left: auto;
+}
+
+.allowance-input,
+.team-select {
+    padding: 0.375rem 0.5rem;
+    border: $border;
+    border-radius: $radius-sm;
+    color: $ink;
+    background: $white;
+    font-size: $text-sm;
+}
+
+.allowance-input {
+    width: 4.5rem;
+}
+
+.team-select {
+    max-width: 9.375rem;
+}
+
+.team-heading-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.team-search {
+    display: flex;
+    gap: 0.375rem;
+    color: $muted;
+    font-size: $text-sm;
+    font-weight: 700;
+    align-items: center;
+}
+
+.team-search input {
+    width: 13.125rem;
+    padding: 0.625rem 0.75rem;
+    border: $border;
+    border-radius: $radius-sm;
+    outline-color: $teal;
+    background: $white;
+}

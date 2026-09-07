@@ -1,0 +1,76 @@
+@use "variables"as *;
+
+.login-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background: $paper;
+}
+
+.login-panel {
+    width: min(26rem, 100%);
+    padding: 2rem;
+    @include surface(0.875rem);
+}
+
+.login-mark {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: grid;
+    place-items: center;
+    margin-bottom: 1.25rem;
+    border-radius: $radius-md;
+    color: $white;
+    background: $ink;
+}
+
+.login-copy {
+    margin-bottom: 1.5rem;
+    color: $muted;
+    font-size: 0.8125rem;
+}
+
+.login-panel label {
+    display: block;
+    margin-bottom: 1rem;
+    color: $description-text;
+    font-weight: 700;
+}
+
+.login-panel input {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 0.75rem;
+    border: $border;
+    border-radius: $radius-sm;
+    outline-color: $teal;
+}
+
+.login-button {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.form-error {
+    margin: -0.5rem 0 0.75rem;
+    color: $red;
+    font-size: $text-sm;
+}
+
+.demo-note {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    color: $muted;
+    font-size: $text-sm;
+}
+
+.demo-accounts {
+    margin-top: 0.5rem;
+    color: $muted;
+    font-size: $text-sm;
+}
