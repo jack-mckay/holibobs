@@ -2,7 +2,7 @@
 
 import { ChevronRight, X } from "lucide-react";
 import { useState } from "react";
-import type { Member } from "./types";
+import type { Member, Role } from "./types";
 
 export function UserModal({
   user,
@@ -18,6 +18,7 @@ export function UserModal({
     email: string;
     password?: string;
     confirmPassword?: string;
+    role?: Role;
     teamId: number;
     holidayAllowance: number;
     userId?: number;
@@ -27,6 +28,7 @@ export function UserModal({
   const [email, setEmail] = useState(user?.email ?? "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState<Role>((user?.role as Role) ?? "USER");
   const [teamId, setTeamId] = useState(user?.teamId ?? teams[0]?.id ?? 1);
   const [allowance, setAllowance] = useState(String(user?.allowance ?? 27));
   const handleAllowanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +86,19 @@ export function UserModal({
             autoComplete="new-password"
           />
         </label>
+        {user && (
+          <label>
+            Role
+            <select
+              value={role}
+              onChange={(event) => setRole(event.target.value as Role)}
+            >
+              <option value="USER">User</option>
+              <option value="ADMIN">Admin</option>
+              <option value="SUPER_ADMIN">Super admin</option>
+            </select>
+          </label>
+        )}
         <div className="date-fields">
           <label>
             Team
@@ -122,6 +137,7 @@ export function UserModal({
                 email,
                 password: password || undefined,
                 confirmPassword: password ? confirmPassword : undefined,
+                role: user ? role : undefined,
                 teamId,
                 holidayAllowance: Number(allowance),
                 userId: user?.id,

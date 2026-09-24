@@ -47,6 +47,7 @@ export function CalendarView({
   setMode,
   isAdmin,
   currentUserId,
+  currentUserTeamId,
   holidayAllowance,
   holidayRemaining,
   awayToday,
@@ -63,6 +64,7 @@ export function CalendarView({
   setMode: (mode: "month" | "year") => void;
   isAdmin: boolean;
   currentUserId: number;
+  currentUserTeamId: number;
   holidayAllowance: number;
   holidayRemaining: number;
   awayToday: number;
@@ -75,9 +77,19 @@ export function CalendarView({
   ) => void;
 }) {
   const [viewDate, setViewDate] = useState(() => new Date());
+  const [requestFilter, setRequestFilter] = useState<"all" | "team" | "me">(
+    "all",
+  );
   const canEdit = (request: Request) =>
     request.requesterId === currentUserId &&
     (request.status === "PENDING" || request.status === "APPROVED");
+  const visibleCalendarRequests = (calendarRequests ?? []).filter((request) =>
+    requestFilter === "all"
+      ? true
+      : requestFilter === "team"
+        ? request.requesterTeamId === currentUserTeamId
+        : request.requesterId === currentUserId,
+  );
   const moveMonth = (amount: number) =>
     setViewDate(
       (current) =>
@@ -144,8 +156,7 @@ export function CalendarView({
         <div>
           <h2>Booking calendar</h2>
           <p>
-            Approved leave is visible to everyone. Admins see their team
-            requests.
+            Approved leave is visible to everyone. Only administrators see / approve pending requests.
           </p>
         </div>
         <div className="view-toggle">
@@ -162,9 +173,23 @@ export function CalendarView({
       </div>
       <div className="calendar-card">
         <div className="calendar-toolbar">
-          <button className="today-button" onClick={jumpToToday}>
-            This month
-          </button>
+          <div className="show">
+            <label htmlFor="request-filter">Filter:</label>
+            <span>&nbsp;</span>
+            <select
+            id="request-filter"
+            className="select"
+            value={requestFilter}
+            onChange={(event) =>
+              setRequestFilter(event.target.value as "all" | "team" | "me")
+            }
+            aria-label="Filter leave requests"
+          >
+            <option value="all">All</option>
+            <option value="team">My team</option>
+            <option value="me">Just me</option>
+          </select>
+          </div>
           <div className="month-nav">
             {mode === "month" && (
               <button
@@ -186,19 +211,21 @@ export function CalendarView({
               </button>
             )}
           </div>
-          <span />
+          <button className="today-button" onClick={jumpToToday}>
+            This month
+          </button>
         </div>
         {mode === "year" ? (
           <YearView
             year={viewDate.getFullYear()}
-            requests={calendarRequests ?? []}
+            requests={visibleCalendarRequests}
             canEdit={canEdit}
             onEdit={onEdit}
           />
         ) : (
           <MonthView
             date={viewDate}
-            requests={calendarRequests ?? []}
+            requests={visibleCalendarRequests}
             canEdit={canEdit}
             onEdit={onEdit}
           />

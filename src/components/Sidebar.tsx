@@ -13,6 +13,7 @@ export function Sidebar({
 }) {
   return (
     <aside className="sidebar">
+      <div className="site-title">Holibobs</div>
       <nav className="nav">
         <p className="eyebrow">Views</p>
         <button

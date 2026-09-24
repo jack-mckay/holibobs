@@ -167,6 +167,21 @@
     font-size: $text-sm;
 }
 
+.person-delete-button {
+    display: grid;
+    width: 1.875rem;
+    height: 1.875rem;
+    place-items: center;
+    border: $border;
+    border-radius: $radius-sm;
+    color: $red;
+    background: $white;
+}
+
+.person-delete-button:hover {
+    background: #fff1f1;
+}
+
 .team-add-button {
     margin-left: auto;
 }

@@ -210,6 +210,7 @@ export default function Home() {
               setMode={setMode}
               isAdmin={isAdmin}
               currentUserId={session.userId}
+              currentUserTeamId={session.teamId}
               holidayAllowance={Number(profile?.holidayAllowance ?? 0)}
               holidayRemaining={Math.max(
                 0,

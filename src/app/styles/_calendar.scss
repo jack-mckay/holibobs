@@ -1,5 +1,60 @@
 @use "variables"as *;
 
+.round-button,
+.more-button {
+    color: $muted;
+}
+
+.view-toggle {
+    display: flex;
+    padding: 0.1875rem;
+    border: $border;
+    border-radius: $radius-sm;
+    background: #f3f6f4;
+
+    button {
+        padding: 0.4375rem 0.875rem;
+        border-radius: $radius-sm;
+        color: #8b9893;
+        font-size: $text-sm;
+
+        &.selected {
+            color: #1f5948;
+            background: $white;
+            box-shadow: 0 0.0625rem 0.1875rem #dce3df;
+            font-weight: 700;
+        }
+    }
+}
+
+.calendar-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.6875rem;
+    padding: 0 1.0625rem;
+    border-bottom: $border;
+}
+
+.today-button {
+    padding: 0.4375rem 0.625rem;
+    border: $border;
+    border-radius: $radius-sm;
+    color: #65756f;
+}
+
+.month-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.9375rem;
+}
+
+.month-nav strong {
+    min-width: 7.375rem;
+    font-family: $font-display;
+    text-align: center;
+}
+
 .calendar-card {
     margin-bottom: 1.125rem;
 }

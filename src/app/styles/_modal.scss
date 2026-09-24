@@ -109,21 +109,3 @@
     justify-content: flex-end;
     gap: 0.625rem;
 }
-
-.secondary-button,
-.danger-button {
-    padding: 0.625rem 0.875rem;
-    border-radius: $radius-sm;
-    font-size: $text-sm;
-    font-weight: 700;
-}
-
-.secondary-button {
-    color: $ink;
-    background: #f2f5f3;
-}
-
-.danger-button {
-    color: $white;
-    background: #b94d4d;
-}

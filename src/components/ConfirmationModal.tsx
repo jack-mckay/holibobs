@@ -6,12 +6,14 @@ export function ConfirmationModal({
   title,
   message,
   confirmLabel,
+  cancelLabel = "Cancel",
   onClose,
   onConfirm,
 }: {
   title: string;
   message: string;
   confirmLabel: string;
+  cancelLabel?: string;
   onClose: () => void;
   onConfirm: () => void;
 }) {
@@ -33,7 +35,7 @@ export function ConfirmationModal({
         <p className="confirmation-message">{message}</p>
         <div className="modal-footer confirmation-footer">
           <button className="secondary-button" onClick={onClose}>
-            Keep request
+            {cancelLabel}
           </button>
           <button className="danger-button" onClick={onConfirm}>
             {confirmLabel}

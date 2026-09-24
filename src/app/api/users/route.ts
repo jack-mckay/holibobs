@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
-import type { RowDataPacket } from "mysql2";
+import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
+import type { Session } from "@/lib/auth";
 import { hashPassword } from "@/lib/password";
 
 type UserRow = RowDataPacket & { teamId: number };
+
+const roles: Session["role"][] = ["USER", "ADMIN", "SUPER_ADMIN"];
 
 export async function GET() {
   const session = await getSession();
@@ -30,6 +33,7 @@ export async function POST(request: Request) {
     email?: string;
     password?: string;
     confirmPassword?: string;
+    role?: string;
     teamId?: number;
     holidayAllowance?: number;
   };
@@ -114,15 +118,42 @@ export async function PATCH(request: Request) {
       { error: "Password must be at least 6 characters" },
       { status: 400 },
     );
+  if (body.role !== undefined && !roles.includes(body.role as Session["role"]))
+    return NextResponse.json({ error: "A valid role is required" }, { status: 400 });
   const nextTeam = body.teamId ?? rows[0].teamId;
   await db.execute(
-    "UPDATE User SET holidayAllowance = COALESCE(?, holidayAllowance), teamId = ?, passwordHash = COALESCE(?, passwordHash) WHERE id = ?",
+    "UPDATE User SET holidayAllowance = COALESCE(?, holidayAllowance), teamId = ?, passwordHash = COALESCE(?, passwordHash), role = COALESCE(?, role) WHERE id = ?",
     [
       body.holidayAllowance ?? null,
       nextTeam,
       body.password ? await hashPassword(body.password) : null,
+      body.role ?? null,
       body.userId,
     ],
   );
+  return NextResponse.json({ success: true });
+}
+
+export async function DELETE(request: Request) {
+  const session = await getSession();
+  if (!session || session.role !== "SUPER_ADMIN")
+    return NextResponse.json(
+      { error: "Super admin access required" },
+      { status: 403 },
+    );
+  const body = (await request.json()) as { userId?: number };
+  if (!body.userId)
+    return NextResponse.json({ error: "A user is required" }, { status: 400 });
+  if (body.userId === session.userId)
+    return NextResponse.json(
+      { error: "You cannot delete your own account" },
+      { status: 400 },
+    );
+  const [deleted] = await db.execute<ResultSetHeader>(
+    "DELETE FROM User WHERE id = ?",
+    [body.userId],
+  );
+  if (deleted.affectedRows === 0)
+    return NextResponse.json({ error: "User not found" }, { status: 404 });
   return NextResponse.json({ success: true });
 }

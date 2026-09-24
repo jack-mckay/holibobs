@@ -1,10 +1,11 @@
 "use client";
 
-import { Plus, Users } from "lucide-react";
+import { Plus, Trash2, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import type { Member, Session } from "./types";
+import type { Member, Role, Session } from "./types";
 import { teamColor } from "./types";
 import { Avatar } from "./Avatar";
+import { ConfirmationModal } from "./ConfirmationModal";
 import { UserModal } from "./UserModal";
 
 export function TeamsView({
@@ -18,6 +19,7 @@ export function TeamsView({
   const [teams, setTeams] = useState<Array<{ id: number; name: string }>>([]);
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Member | null>(null);
+  const [deleting, setDeleting] = useState<Member | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const isSuperAdmin = session.role === "SUPER_ADMIN";
 
@@ -106,6 +108,7 @@ export function TeamsView({
     email: string;
     password?: string;
     confirmPassword?: string;
+    role?: Role;
     teamId: number;
     holidayAllowance: number;
     userId?: number;
@@ -120,6 +123,7 @@ export function TeamsView({
               name: values.name,
               email: values.email,
               password: values.password,
+              confirmPassword: values.confirmPassword,
               teamId: values.teamId,
               holidayAllowance: values.holidayAllowance,
             },
@@ -131,6 +135,19 @@ export function TeamsView({
     setEditing(null);
     await loadData();
     onNotice(values.userId ? "User updated" : "User added");
+  }
+
+  async function deleteUser(user: Member) {
+    const response = await fetch("/api/users", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user.id }),
+    });
+    const data = await response.json();
+    if (!response.ok) return onNotice(data.error);
+    setDeleting(null);
+    await loadData();
+    onNotice("User deleted");
   }
 
   return (
@@ -225,6 +242,16 @@ export function TeamsView({
                       >
                         Edit
                       </button>
+                      {person.id !== session.userId && (
+                        <button
+                          className="person-delete-button"
+                          onClick={() => setDeleting(person)}
+                          aria-label={`Delete ${person.name}`}
+                          title={`Delete ${person.name}`}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      )}
                     </span>
                   )}
                 </div>
@@ -242,6 +269,16 @@ export function TeamsView({
             setEditing(null);
           }}
           onSave={saveUser}
+        />
+      )}
+      {deleting && (
+        <ConfirmationModal
+          title={`Delete ${deleting.name}?`}
+          message="This will permanently delete the user and their leave requests."
+          confirmLabel="Delete user"
+          cancelLabel="Keep user"
+          onClose={() => setDeleting(null)}
+          onConfirm={() => deleteUser(deleting)}
         />
       )}
     </>
