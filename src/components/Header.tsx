@@ -15,7 +15,7 @@ export function Header({
   onSignOut,
 }: {
   session: Session;
-  view: "calendar" | "teams" | "profile";
+  view: "calendar" | "teams" | "profile" | "admin";
   profileOpen: boolean;
   onToggleProfile: () => void;
   onCloseProfile: () => void;
@@ -23,7 +23,13 @@ export function Header({
   onSignOut: () => void;
 }) {
   const title =
-    view === "calendar" ? "Calendar" : view === "teams" ? "Teams" : "Profile";
+    view === "calendar"
+      ? "Calendar"
+      : view === "teams"
+        ? "Teams"
+        : view === "admin"
+          ? "Admin"
+          : "Profile";
   return (
     <>
       <header className="topbar">

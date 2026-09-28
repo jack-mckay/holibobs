@@ -1,5 +1,12 @@
 export type Role = "USER" | "ADMIN" | "SUPER_ADMIN";
 export type DayPortion = "AM" | "PM";
+export type RequiredLeave = {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  recurring: boolean;
+};
 export type Session = {
   userId: number;
   email: string;

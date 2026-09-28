@@ -5,15 +5,16 @@ import { ShieldCheck } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { CalendarView } from "@/components/CalendarView";
 import { Header } from "@/components/Header";
+import { AdminView } from "@/components/AdminView";
 import { ProfileView } from "@/components/ProfileView";
 import { RequestModal } from "@/components/RequestModal";
 import { Sidebar } from "@/components/Sidebar";
 import { TeamsView } from "@/components/TeamsView";
-import type { Request, Session } from "@/components/types";
+import type { Request, RequiredLeave, Session } from "@/components/types";
 import { mapRequest } from "@/components/types";
 import type { DayPortion } from "@/lib/leave";
 
-type View = "calendar" | "teams" | "profile";
+type View = "calendar" | "teams" | "profile" | "admin";
 type ProfileSummary = { holidayAllowance: number; takenDays: number };
 
 function localDateKey(date: Date) {
@@ -25,6 +26,7 @@ export default function Home() {
   const pathname = usePathname();
   const [session, setSession] = useState<Session | null>(null);
   const [requests, setRequests] = useState<Request[]>([]);
+  const [requiredLeave, setRequiredLeave] = useState<RequiredLeave[]>([]);
   const [profile, setProfile] = useState<ProfileSummary | null>(null);
   const [mode, setMode] = useState<"month" | "year">("month");
   const [editing, setEditing] = useState<Request | null>(null);
@@ -89,7 +91,9 @@ export default function Home() {
     awayTodayRequests.map((request) => request.requesterTeamId),
   ).size;
   const view: View =
-    pathname === "/teams"
+    pathname === "/admin"
+      ? "admin"
+      : pathname === "/teams"
       ? "teams"
       : pathname === "/profile"
         ? "profile"
@@ -103,16 +107,23 @@ export default function Home() {
       );
   }, [router]);
   useEffect(() => {
+    if (session && pathname === "/admin" && session.role !== "SUPER_ADMIN")
+      router.replace("/");
+  }, [pathname, router, session]);
+  useEffect(() => {
     if (session && (view === "calendar" || view === "teams")) refreshRequests();
   }, [session, view]);
   async function refreshRequests() {
-    const [requestsResponse, profileResponse] = await Promise.all([
+    const [requestsResponse, profileResponse, requiredLeaveResponse] = await Promise.all([
       fetch("/api/requests"),
       fetch("/api/profile"),
+      fetch("/api/holidays"),
     ]);
     if (requestsResponse.ok)
       setRequests((await requestsResponse.json()).map(mapRequest));
     if (profileResponse.ok) setProfile(await profileResponse.json());
+    if (requiredLeaveResponse.ok)
+      setRequiredLeave(await requiredLeaveResponse.json());
   }
   function flash(message: string) {
     setNotice(message);
@@ -179,9 +190,12 @@ export default function Home() {
       <Sidebar
         view={view}
         pendingCount={pending.length}
+        isSuperAdmin={session.role === "SUPER_ADMIN"}
         onView={(nextView) => {
           router.push(
-            nextView === "teams"
+            nextView === "admin"
+              ? "/admin"
+              : nextView === "teams"
               ? "/teams"
               : nextView === "profile"
                 ? "/profile"
@@ -205,6 +219,7 @@ export default function Home() {
               yourRequests={yourRequests}
               teamRequests={teamRequests}
               calendarRequests={calendarRequests}
+              requiredLeave={requiredLeave}
               pending={pending}
               mode={mode}
               setMode={setMode}
@@ -231,6 +246,9 @@ export default function Home() {
             />
           )}
           {view === "teams" && <TeamsView session={session} onNotice={flash} />}
+          {view === "admin" && session.role === "SUPER_ADMIN" && (
+            <AdminView onNotice={flash} />
+          )}
           {view === "profile" && (
             <ProfileView session={session} onNotice={flash} />
           )}

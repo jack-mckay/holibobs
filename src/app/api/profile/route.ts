@@ -3,19 +3,22 @@ import type { RowDataPacket } from "mysql2";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { hashPassword } from "@/lib/password";
+import { getTakenDaysByUserIds } from "@/lib/allowance";
 
-type ProfileRow = RowDataPacket & { id: number; name: string; email: string; role: string; team: string; holidayAllowance: number; takenDays: number };
+type ProfileRow = RowDataPacket & { id: number; name: string; email: string; role: string; team: string; holidayAllowance: number };
 
 export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Sign in required" }, { status: 401 });
   const [rows] = await db.query<ProfileRow[]>(`
-    SELECT u.id, u.name, u.email, u.role, t.name AS team, u.holidayAllowance,
-      COALESCE(SUM(CASE WHEN lt.code = 'HOLIDAY' AND lr.status IN ('PENDING', 'APPROVED') THEN lr.daysTaken ELSE 0 END), 0) AS takenDays
-    FROM User u INNER JOIN Teams t ON t.id = u.teamId LEFT JOIN LeaveRequests lr ON lr.requesterId = u.id LEFT JOIN LeaveTypes lt ON lt.id = lr.leaveTypeId
-    WHERE u.id = ? GROUP BY u.id, u.name, u.email, u.role, t.name, u.holidayAllowance
+    SELECT u.id, u.name, u.email, u.role, t.name AS team, u.holidayAllowance
+    FROM User u INNER JOIN Teams t ON t.id = u.teamId WHERE u.id = ?
   `, [session.userId]);
-  return NextResponse.json(rows[0]);
+  const takenDays = await getTakenDaysByUserIds([session.userId]);
+  return NextResponse.json({
+    ...rows[0],
+    takenDays: takenDays.get(session.userId) ?? 0,
+  });
 }
 
 export async function PATCH(request: Request) {

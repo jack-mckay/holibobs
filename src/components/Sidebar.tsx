@@ -1,15 +1,17 @@
 "use client";
 
-import { CalendarDays, LayoutGrid, Users } from "lucide-react";
+import { CalendarDays, LayoutGrid, Settings, Users } from "lucide-react";
 
 export function Sidebar({
   view,
   pendingCount,
+  isSuperAdmin,
   onView,
 }: {
-  view: "calendar" | "teams" | "profile";
+  view: "calendar" | "teams" | "profile" | "admin";
   pendingCount: number;
-  onView: (view: "calendar" | "teams" | "profile") => void;
+  isSuperAdmin: boolean;
+  onView: (view: "calendar" | "teams" | "profile" | "admin") => void;
 }) {
   return (
     <aside className="sidebar">
@@ -35,6 +37,14 @@ export function Sidebar({
         >
           <LayoutGrid size={18} /> Profile
         </button>
+        {isSuperAdmin && (
+          <button
+            className={view === "admin" ? "nav-item active" : "nav-item"}
+            onClick={() => onView("admin")}
+          >
+            <Settings size={18} /> Admin
+          </button>
+        )}
       </nav>
     </aside>
   );

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import type { Session } from "@/lib/auth";
 import { hashPassword } from "@/lib/password";
+import { getTakenDaysByUserIds } from "@/lib/allowance";
 
 type UserRow = RowDataPacket & { teamId: number };
 
@@ -15,10 +16,17 @@ export async function GET() {
     return NextResponse.json({ error: "Sign in required" }, { status: 401 });
 
   const [users] = await db.query<RowDataPacket[]>(
-    `SELECT u.id, u.name, u.email, u.role, u.teamId, t.name AS team, u.holidayAllowance, COALESCE(SUM(CASE WHEN lt.code = 'HOLIDAY' AND lr.status IN ('PENDING', 'APPROVED') THEN lr.daysTaken ELSE 0 END), 0) AS takenDays FROM User u INNER JOIN Teams t ON t.id = u.teamId LEFT JOIN LeaveRequests lr ON lr.requesterId = u.id LEFT JOIN LeaveTypes lt ON lt.id = lr.leaveTypeId GROUP BY u.id, u.name, u.email, u.role, u.teamId, t.name, u.holidayAllowance ORDER BY t.id, u.name`,
+    "SELECT u.id, u.name, u.email, u.role, u.teamId, t.name AS team, u.holidayAllowance FROM User u INNER JOIN Teams t ON t.id = u.teamId ORDER BY t.id, u.name",
   );
-
-  return NextResponse.json(users);
+  const takenDays = await getTakenDaysByUserIds(
+    users.map((user) => Number(user.id)),
+  );
+  return NextResponse.json(
+    users.map((user) => ({
+      ...user,
+      takenDays: takenDays.get(Number(user.id)) ?? 0,
+    })),
+  );
 }
 
 export async function POST(request: Request) {
@@ -92,6 +100,7 @@ export async function PATCH(request: Request) {
     userId?: number;
     holidayAllowance?: number;
     teamId?: number;
+    role?: string;
     password?: string;
     confirmPassword?: string;
   };

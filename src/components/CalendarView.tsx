@@ -5,12 +5,12 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock3,
-  MoreHorizontal,
+  Pencil,
   Plus,
   Users,
 } from "lucide-react";
 import { useState } from "react";
-import type { Request } from "./types";
+import type { Request, RequiredLeave } from "./types";
 import { Avatar } from "./Avatar";
 import { ConfirmationModal } from "./ConfirmationModal";
 
@@ -42,6 +42,7 @@ export function CalendarView({
   yourRequests,
   teamRequests,
   calendarRequests,
+  requiredLeave,
   pending,
   mode,
   setMode,
@@ -59,6 +60,7 @@ export function CalendarView({
   yourRequests: Request[];
   teamRequests: Request[];
   calendarRequests?: Request[];
+  requiredLeave: RequiredLeave[];
   pending: Request[];
   mode: "month" | "year";
   setMode: (mode: "month" | "year") => void;
@@ -219,6 +221,7 @@ export function CalendarView({
           <YearView
             year={viewDate.getFullYear()}
             requests={visibleCalendarRequests}
+            requiredLeave={requiredLeave}
             canEdit={canEdit}
             onEdit={onEdit}
           />
@@ -226,6 +229,7 @@ export function CalendarView({
           <MonthView
             date={viewDate}
             requests={visibleCalendarRequests}
+            requiredLeave={requiredLeave}
             canEdit={canEdit}
             onEdit={onEdit}
           />
@@ -358,7 +362,7 @@ function RequestPanel({
             )}
             {canEdit(request) && (
               <button className="more-button" onClick={() => onEdit(request)}>
-                <MoreHorizontal size={18} />
+                <Pencil size={18} />
               </button>
             )}
           </div>
@@ -393,12 +397,14 @@ function RequestPanel({
 function MonthView({
   date,
   requests,
+  requiredLeave,
   canEdit,
   onEdit,
   compact = false,
 }: {
   date: Date;
   requests: Request[];
+  requiredLeave: RequiredLeave[];
   canEdit: (request: Request) => boolean;
   onEdit: (request: Request) => void;
   compact?: boolean;
@@ -434,13 +440,28 @@ function MonthView({
             ? requests.filter((request) => isInRequestDay(request, cell))
             : [];
           const firstRequest = dayRequests[0];
+          const requiredLeaveItems = cell
+            ? requiredLeave.filter(
+                (item) => {
+                  const date = dateKey(cell);
+                  if (!item.recurring)
+                    return item.startDate <= date && item.endDate >= date;
+                  const monthDay = date.slice(5);
+                  const start = item.startDate.slice(5);
+                  const end = item.endDate.slice(5);
+                  return start <= end
+                    ? start <= monthDay && monthDay <= end
+                    : monthDay >= start || monthDay <= end;
+                },
+              )
+            : [];
           const isToday =
             cell &&
             cell.getFullYear() === new Date().getFullYear() &&
             cell.getMonth() === new Date().getMonth() &&
             cell.getDate() === new Date().getDate();
           const dayClass = cell
-            ? `calendar-day${firstRequest ? ` has-request ${firstRequest.color}` : ""}${isToday ? " today" : ""}`
+            ? `calendar-day${firstRequest ? ` has-request ${firstRequest.color}` : ""}${requiredLeaveItems.length ? " has-required-leave" : ""}${isToday ? " today" : ""}`
             : "calendar-day empty";
           return (
             <div
@@ -463,6 +484,16 @@ function MonthView({
                         <small>{request.type}</small>
                       </button>
                     ))}
+                  {!compact && requiredLeaveItems.map((item) => (
+                    <div
+                      className="event required-leave-event"
+                      key={`required-${item.id}-${dateKey(cell)}`}
+                      aria-label={`${item.name}, required leave`}
+                    >
+                      <span>{item.name}</span>
+                      <small>Required leave</small>
+                    </div>
+                  ))}
                 </>
               )}
             </div>
@@ -476,11 +507,13 @@ function MonthView({
 function YearView({
   year,
   requests,
+  requiredLeave,
   canEdit,
   onEdit,
 }: {
   year: number;
   requests: Request[];
+  requiredLeave: RequiredLeave[];
   canEdit: (request: Request) => boolean;
   onEdit: (request: Request) => void;
 }) {
@@ -493,6 +526,7 @@ function YearView({
             compact
             date={new Date(year, month, 1)}
             requests={requests}
+            requiredLeave={requiredLeave}
             canEdit={canEdit}
             onEdit={onEdit}
           />

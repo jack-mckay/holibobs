@@ -187,6 +187,13 @@
     border-style: dashed;
 }
 
+.event.required-leave-event {
+    color: #365f4e;
+    border-color: #54866b;
+    background: #e5f0e8;
+    cursor: default;
+}
+
 .year-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -249,6 +256,12 @@
 
 .mini-calendar .calendar-day.has-request.pink {
     background: $pink-light;
+}
+
+.mini-calendar .calendar-day.has-required-leave {
+    outline: 0.0625rem solid #54866b;
+    outline-offset: -0.0625rem;
+    background: #e5f0e8;
 }
 
 .mini-calendar .date-number {
