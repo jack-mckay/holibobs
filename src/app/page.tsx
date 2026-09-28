@@ -227,11 +227,10 @@ export default function Home() {
               currentUserId={session.userId}
               currentUserTeamId={session.teamId}
               holidayAllowance={Number(profile?.holidayAllowance ?? 0)}
-              holidayRemaining={Math.max(
-                0,
+              holidayRemaining={
                 Number(profile?.holidayAllowance ?? 0) -
-                  Number(profile?.takenDays ?? 0),
-              )}
+                Number(profile?.takenDays ?? 0)
+              }
               awayToday={awayTodayRequests.length}
               awayTodayTeams={awayTodayTeams}
               onNew={() => {

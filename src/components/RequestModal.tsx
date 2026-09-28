@@ -5,6 +5,12 @@ import { useEffect, useState } from "react";
 import { calculateDaysTaken } from "@/lib/leave";
 import type { DayPortion, Request } from "./types";
 
+function parseDateInput(value: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const date = new Date(`${value}T12:00:00Z`);
+  return date.toISOString().slice(0, 10) === value ? date : null;
+}
+
 export function RequestModal({
   request,
   onClose,
@@ -47,12 +53,11 @@ export function RequestModal({
         }
       });
   }, []);
-  const total = calculateDaysTaken(
-    new Date(`${start}T12:00:00`),
-    new Date(`${end}T12:00:00`),
-    startPortion,
-    endPortion,
-  );
+  const startDate = parseDateInput(start);
+  const endDate = parseDateInput(end);
+  const total = startDate && endDate
+    ? calculateDaysTaken(startDate, endDate, startPortion, endPortion)
+    : null;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -122,7 +127,9 @@ export function RequestModal({
           </label>
         </div>
         <p className="day-total">
-          {total === null ? "Choose a valid range" : `${total} days requested`}
+          {total === null || !Number.isFinite(total)
+            ? "Choose a valid range"
+            : `${total} days requested`}
         </p>
         <label>
           Note
@@ -137,7 +144,7 @@ export function RequestModal({
           </span>
           <button
             className="primary-button"
-            disabled={total === null}
+            disabled={total === null || !Number.isFinite(total)}
             onClick={() =>
               onSave({ start, end, type, startPortion, endPortion, note })
             }

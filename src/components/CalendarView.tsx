@@ -124,7 +124,7 @@ export function CalendarView({
         <Stat
           icon={<CalendarDays size={18} />}
           color="teal-bg"
-          label="Holiday remaining"
+          label="Days remaining"
           value={String(holidayRemaining)}
           valueClassName={holidayRemaining < 0 ? "negative" : undefined}
           detail={`of ${holidayAllowance} days`}

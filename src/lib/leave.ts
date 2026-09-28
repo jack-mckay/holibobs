@@ -1,6 +1,10 @@
 export type DayPortion = "AM" | "PM";
 
 export function calculateDaysTaken(startDate: Date, endDate: Date, startPortion: DayPortion, endPortion: DayPortion) {
+  if (
+    Number.isNaN(startDate.getTime()) ||
+    Number.isNaN(endDate.getTime())
+  ) return null;
   const startDay = Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), startDate.getUTCDate());
   const endDay = Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(), endDate.getUTCDate());
   const dayDifference = Math.round((endDay - startDay) / 86_400_000);
