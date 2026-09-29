@@ -13,6 +13,7 @@ import { useState } from "react";
 import type { Request, RequiredLeave } from "./types";
 import { Avatar } from "./Avatar";
 import { ConfirmationModal } from "./ConfirmationModal";
+import { Alert } from "./Alert";
 
 const monthNames = [
   "January",
@@ -106,7 +107,10 @@ export function CalendarView({
       ? String(viewDate.getFullYear())
       : `${monthNames[viewDate.getMonth()]} ${viewDate.getFullYear()}`;
   return (
-    <>
+      <>
+      {holidayRemaining < 0 && 
+      <Alert status="warning" message="You've used all of your holiday allowance for this year. An admin will still be able to approve your requests." />
+      }
       <div className="page-heading">
         <div>
           <p className="kicker">
@@ -319,6 +323,7 @@ function RequestPanel({
                 {request.end} {request.endPortion} · {request.daysTaken} days
               </span>
             </div>
+            <div className="request-actions">
             <span className={`request-status ${request.status.toLowerCase()}`}>
               {request.status.toLowerCase()}
             </span>
@@ -365,6 +370,7 @@ function RequestPanel({
                 <Pencil size={18} />
               </button>
             )}
+            </div>
           </div>
         ))}
       </div>

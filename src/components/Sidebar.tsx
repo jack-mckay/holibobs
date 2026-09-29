@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, LayoutGrid, Settings, Users } from "lucide-react";
+import { CalendarDays, User, Settings, Users } from "lucide-react";
 
 export function Sidebar({
   view,
@@ -35,7 +35,7 @@ export function Sidebar({
           className={view === "profile" ? "nav-item active" : "nav-item"}
           onClick={() => onView("profile")}
         >
-          <LayoutGrid size={18} /> Profile
+          <User size={18} /> Profile
         </button>
         {isSuperAdmin && (
           <button

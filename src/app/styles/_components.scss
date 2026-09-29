@@ -32,6 +32,7 @@ button {
     box-shadow: 0 0.3125rem 0.875rem rgba(29, 127, 100, 0.14);
     font-size: $text-sm;
     font-weight: 700;
+    white-space: nowrap;
 
     &:hover {
         background: $teal-dark;
@@ -209,5 +210,28 @@ button {
                 min-width: 0;
             }
         }
+    }
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: $radius-sm;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+
+    svg {
+        flex-shrink: 0;
+        margin-right: 0.5rem;
+    }
+
+    &.warning {
+        background-color: $orange-light;
+        color: $orange-dark;
+        border: $orange-dark;
+    }
+
+    .alert-dismiss {
+        margin-left: auto;
     }
 }

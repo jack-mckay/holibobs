@@ -141,50 +141,64 @@
 }
 
 .stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.9375rem;
-    margin-bottom: 2.1875rem;
-}
-
-.stat-card {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-height: 6.125rem;
-    padding: 1.125rem;
-    @include surface;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
 
-    &>div {
-        flex: 1;
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: 6.125rem;
+        padding: 1.125rem;
+        width: 100%;
+        flex-wrap: wrap;
+    
+        @include surface;
+
+        &>div {
+            flex: 1;
+            width: 100%;
+        }
+
+        small,
+        strong {
+            display: block;
+        }
+
+        small {
+            color: $muted;
+            font-size: $text-sm;
+        }
+
+        strong {
+            margin: 0.3125rem 0 0.5rem;
+            font-family: $font-display;
+            font-size: $text-lg;
+        }
+
+        strong.negative {
+            color: $red;
+        }
+
+        em {
+            display: block;
+            color: $muted;
+            font-size: $text-sm;
+        }
+
+        @media screen and (max-width: 75rem) and (min-width: 55rem) {
+            .stat-trend {
+                width: 100%;
+            }
+        }
+
+        @media screen and (min-width: 55rem) {
+            max-width: calc(33% - 0.5rem);
+            flex: 0 0 33%;
+        }
     }
-
-    small,
-    strong {
-        display: block;
-    }
-
-    small {
-        color: $muted;
-        font-size: $text-sm;
-    }
-
-    strong {
-        margin: 0.3125rem 0 0.5rem;
-        font-family: $font-display;
-        font-size: $text-lg;
-    }
-
-    strong.negative {
-        color: $red;
-    }
-
-    em {
-        display: block;
-        color: $muted;
-        font-size: $text-sm;
-    }
-
 }
 
 .stat-icon {

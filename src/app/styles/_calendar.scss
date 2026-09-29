@@ -276,22 +276,29 @@
     gap: 0.75rem;
     padding: 0.75rem 1.25rem;
     border-top: $border;
+    flex-wrap: wrap;
 }
 
 .request-main {
     flex: 1;
-    min-width: 0;
+    min-width: 20rem;
+
+    strong,
+    span {
+        display: block;
+    }
+
+    span {
+        margin-top: 0.25rem;
+        color: $muted;
+        font-size: $text-sm;
+    }
 }
 
-.request-main strong,
-.request-main span {
-    display: block;
-}
-
-.request-main span {
-    margin-top: 0.25rem;
-    color: $muted;
-    font-size: $text-sm;
+.request-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .request-status {
@@ -319,6 +326,7 @@
     background: $orange-light;
     font-size: $text-sm;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .approve-button,
